@@ -1,0 +1,245 @@
+$sidebar-padding: 1rem;
+
+@mixin box-shadow {
+  box-shadow: rgb(0 38 255 / 30%) 0px 1px 20px 0px, rgb(0 71 255 / 15%) 0px 2px 20px 2px;
+}
+
+@mixin transition {
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+  -moz-transition: all 300ms ease;
+  -o-transition: all 300ms ease;
+}
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  display: flex;
+  height: 100vh;
+
+  .content-container {
+    margin: 2rem 4rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    @media screen and (max-width: 1536px) {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .content-box {
+      margin: 0 2rem;
+      width: 100%;
+    }
+  }
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.sidebar,
+.note-card,
+.form input,
+.form textarea,
+.form button {
+  @include box-shadow;
+}
+
+.sidebar {
+  @include transition;
+  @include flex-column;
+  padding: $sidebar-padding;
+  height: calc(100% - (2 * $sidebar-padding));
+  width: 2.5rem;
+  gap: 1rem;
+  z-index: 2;
+  background: var(--secondary-glow);
+  background-color: var(--sidebar-bgcolor);
+
+  @media screen and (max-width: 600px) {
+    transform: translateX(-100%);
+    position: fixed;
+    left: 0;
+    .item.menu {
+      transform: translateX(4.5rem);
+    }
+  }
+
+  &.active {
+    width: 20rem;
+
+    @media screen and (max-width: 600px) {
+      width: calc(100% - (2 * $sidebar-padding));
+      transform: translateX(0);
+      .item.menu {
+        transform: translate(0);
+      }
+    }
+  }
+}
+
+.item {
+  @include transition;
+  height: 24px;
+  @include flex-center;
+  justify-content: flex-start;
+  padding: 0.5rem;
+  gap: 1rem;
+  overflow: hidden;
+  text-decoration: none;
+
+  &.active {
+    border-radius: 10px;
+    background-color: #e2e2e2;
+    color: rgb(var(--link-active-rgb));
+  }
+
+  svg {
+    min-width: 24px;
+  }
+
+  p {
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+}
+
+.notes-wrapper {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  flex-wrap: wrap;
+  gap: 3rem;
+
+  @media screen and (max-width: 1536px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media screen and (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .note-card {
+    background: var(--primary-glow);
+
+    &.center {
+      @include flex-center;
+    }
+
+    position: relative;
+    overflow: hidden;
+    padding: 1rem;
+    border-radius: 25px;
+    height: 14rem;
+
+    svg {
+      cursor: pointer;
+    }
+
+    &:hover > .actions {
+      transform: translateY(0);
+    }
+
+    .actions {
+      @include transition;
+      @include flex-center;
+      gap: 10px;
+      padding: 0.7rem;
+      background-color: rgb(var(--note-action-menu));
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      transform: translateY(100%);
+    }
+  }
+}
+
+.title {
+  max-width: 130px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.time {
+  @include flex-center;
+  gap: 5px;
+}
+
+.form {
+  form {
+    @include flex-column;
+    width: 100%;
+    margin: auto;
+  }
+
+  input,
+  textarea {
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    margin-bottom: 1.5rem;
+  }
+
+  input {
+    height: 40px;
+    font-size: 1.3rem;
+    padding: 0.3rem 1rem;
+  }
+
+  textarea {
+    font-size: 1rem;
+    padding: 1rem;
+    // 2rem because padding on left and right is 1rem
+    max-width: calc(100% - 2rem);
+    min-width: calc(100% - 2rem);
+    max-height: 500px;
+  }
+}
+
+button {
+  height: 40px;
+  width: 100px;
+  border-radius: 10px;
+  border: none;
+  align-self: flex-end;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  background: #000;
+  color: #fff;
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--primary-glow);
+  }
+
+  &.secondary {
+    background: #e4e4e4;
+    color: #000;
+  }
+}
+
+.no-notes {
+  height: 50%;
+  @include flex-center;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #888;
+}
